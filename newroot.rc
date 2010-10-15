@@ -1,0 +1,52 @@
+#!/bin/sh
+
+HOME=/
+PATH=/rescue
+export HOME PATH
+
+mount -u -w -o async,noatime /
+
+if [ ! -d /cdrom ]; then
+	mkdir /cdrom
+fi
+mount -t cd9660 /dev/iso9660/Live_FreeBSD /cdrom
+
+if [ ! -d /newroot ]; then
+	mkdir /newroot
+fi
+mdmfs -P -F /cdrom/uzip/root.uzip -o ro md.uzip /newroot
+
+if [ ! -d /rwroot ]; then
+	mkdir /rwroot
+fi
+mdmfs -M -S -o async,noatime -s 32m md /rwroot
+mount -t unionfs /rwroot /newroot
+
+if [ ! -d /newroot/dev ]; then
+	mkdir /newroot/dev
+fi
+mount -t devfs devfs /newroot/dev
+
+if [ ! -d /newroot/cdrom ]; then
+	mkdir /newroot/cdrom
+fi
+mount -t nullfs -o ro /cdrom /newroot/cdrom
+
+if [ -f /cdrom/uzip/src.uzip ]; then
+	if [ ! -d /newroot/usr/src ]; then
+		mkdir /newroot/usr/src
+	fi
+	mdmfs -P -F /cdrom/uzip/src.uzip -o ro md.uzip /newroot/usr/src
+fi
+
+if [ -f /cdrom/uzip/obj.uzip ]; then
+	if [ ! -d /newroot/usr/obj ]; then
+		mkdir /newroot/usr/obj
+	fi
+	mdmfs -P -F /cdrom/uzip/obj.uzip -o ro md.uzip /newroot/usr/obj
+fi
+
+kenv init_shell="/bin/sh"
+exit 0
+
+# vim: set ft=sh :
