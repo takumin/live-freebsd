@@ -93,7 +93,7 @@ ${WORKDIR}/.install_done:
 		make DESTDIR=${DESTDIR} __MAKE_CONF=${MAKECONF} SRCCONF=${SRCCONF} \
 		KERNCONF=${KERNCONF} installkernel > /dev/null
 
-	@rm -rf ${DISTDIR}/boot/kernel/*.symbols
+	@rm -rf ${DESTDIR}/boot/kernel/*.symbols
 .elif !empty(BASE)
 	@if [ ! -d "${BASE}" ]; then \
 		exit 1; \
@@ -103,10 +103,10 @@ ${WORKDIR}/.install_done:
 			exit 1; \
 		fi \
 	done
-	@cat ${BASE}/base/base.?? | tar --unlink -xpzf - -C ${DISTDIR}
-	@cat ${BASE}/kernels/generic.?? | ${TAR} --unlink -xpzf - -C ${DISTDIR}/boot
-	@mv ${DISTDIR}/boot/GENERIC/* ${DISTDIR}/boot/kernel
-	@rm -rf ${DISTDIR}/boot/kernel/*.symbols
+	@cat ${BASE}/base/base.?? | tar --unlink -xpzf - -C ${DESTDIR}
+	@cat ${BASE}/kernels/generic.?? | ${TAR} --unlink -xpzf - -C ${DESTDIR}/boot
+	@mv ${DESTDIR}/boot/GENERIC/* ${DESTDIR}/boot/kernel
+	@rm -rf ${DESTDIR}/boot/kernel/*.symbols
 .else
 	@exit 1
 .endif
