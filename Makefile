@@ -104,7 +104,7 @@ ${WORKDIR}/.install_done:
 		fi \
 	done
 	@cat ${BASE}/base/base.?? | tar --unlink -xpzf - -C ${DESTDIR}
-	@cat ${BASE}/kernels/generic.?? | ${TAR} --unlink -xpzf - -C ${DESTDIR}/boot
+	@cat ${BASE}/kernels/generic.?? | tar --unlink -xpzf - -C ${DESTDIR}/boot
 	@mv ${DESTDIR}/boot/GENERIC/* ${DESTDIR}/boot/kernel
 	@rm -rf ${DESTDIR}/boot/kernel/*.symbols
 .else
