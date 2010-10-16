@@ -194,7 +194,7 @@ ${WORKDIR}/.config_done:
 	@echo "net.inet.udp.blackhole=1" >> ${DESTDIR}/etc/sysctl.conf
 	@echo "net.inet.icmp.icmplim=50" >> ${DESTDIR}/etc/sysctl.conf
 
-	@perl -p -i -e 's/.*(PermitRootLogin).*/\1 yes/' /etc/ssh/sshd_config
+	@perl -p -i -e 's/.*(PermitRootLogin).*/\1 yes/' ${DESTDIR}/etc/ssh/sshd_config
 
 	@ssh-keygen -t rsa1 -b 1024 -f ${DESTDIR}/etc/ssh/ssh_host_key -N '' > /dev/null
 	@ssh-keygen -t dsa -f ${DESTDIR}/etc/ssh/ssh_host_dsa_key -N '' > /dev/null
